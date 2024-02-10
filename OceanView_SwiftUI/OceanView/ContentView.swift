@@ -42,6 +42,7 @@ struct ContentView: View {
 		localStorage = lstorage
 		refreshStorage = rStorage
 		d = Dumping(addressStorage?.oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
+		selectedRefreshInterval = refreshStorage?.refreshFrequency() ?? 0
 	}
 
 	var sortedItems: [OceanEarning] {
@@ -195,8 +196,6 @@ struct ContentView: View {
 								}
 							}
 						}
-
-
 					}
 				}
 				.navigationBarTitleDisplayMode(.inline)
@@ -258,6 +257,11 @@ struct ContentView: View {
 					Text("Settings").tag(2)
 				}
 				.pickerStyle(.segmented)
+				.onChange(of: selectedTab, initial: false) {
+					if selectedTab == 2 {
+						selectedRefreshInterval = refreshStorage?.refreshFrequency() ?? 0
+					}
+				}
 			}
 		}
 	detail: {
