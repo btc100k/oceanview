@@ -74,8 +74,13 @@ class Dumping {
 		earnings = AddressEarnings(addr: address)
 	}
 
-	func allEarnings() async -> [BlockEarning] {
-		await earnings.earnings()
+	func allOceanEarnings() async -> [OceanEarning] {
+		let earnings = await earnings.earnings()
+		var response: [OceanEarning] = []
+		for one in earnings {
+			response.append(OceanEarning(earning: one))
+		}
+		return response
 	}
 
 	func refresh() async {

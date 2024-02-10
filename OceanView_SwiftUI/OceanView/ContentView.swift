@@ -32,10 +32,14 @@ struct ContentView: View {
 	@State private var rotationDegree: Double = 0
 	@State private var selectedTab: Int = 0
 	let addressStorage: AddressStorage?
+	let localStorage: LocalStorage?
+	let refreshStorage: RefreshStorage?
 	let d: Dumping
 
-	init(addressStorage storage: AddressStorage?) {
+	init(addressStorage storage: AddressStorage?, localStorage lstorage: LocalStorage?, refreshStorage rStorage: RefreshStorage?) {
 		addressStorage = storage
+		localStorage = lstorage
+		refreshStorage = rStorage
 		d = Dumping(addressStorage?.oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
 	}
 
@@ -63,6 +67,18 @@ struct ContentView: View {
 		// sort newest to oldest
 		return Array(groups.values).sorted { $0.month > $1.month }
 	}
+
+	let refreshIntervals = [("Manual Only", 0),
+							("1 minute (Don't do this)", 60),
+							("5 minutes", 300),
+							("15 minutes", 900),
+							("1 hour", 3600),
+							("6 hours", 21600),
+							("12 hours", 43200),
+							("24 hours", 86400),
+							("48 hours", 172800),
+	]
+	@State private var selectedRefreshInterval = 0
 
 	var body: some View {
 		NavigationSplitView {
@@ -133,6 +149,25 @@ struct ContentView: View {
 								}
 							}
 						}
+					} else if selectedTab == 2 {
+						VStack {
+							HStack {
+								Picker("Refresh", selection: $selectedRefreshInterval) {
+									ForEach(refreshIntervals, id: \.1) { interval in
+										Text(interval.0).tag(interval.1)
+									}
+								}
+								.pickerStyle(MenuPickerStyle())
+								.onChange(of: selectedRefreshInterval) {
+									refreshStorage?.saveRefreshFrequency(Int(selectedRefreshInterval))
+								}
+							}
+							Text("This uses network & battery, so make sure you know what you're doing if you set this more frequent than 1 hour.")
+								.italic()
+								.font(.system(size: 11))
+								.foregroundColor(OceanViewApp.oceanBlue())
+
+						}
 					}
 				}
 				.navigationBarTitleDisplayMode(.inline)
@@ -162,7 +197,7 @@ struct ContentView: View {
 						Button(action: {
 							Task {
 								isRefreshing = true
-								await deleteAll()
+								await localStorage?.deleteEarnings()
 								if let storage = addressStorage {
 									storage.saveOceanAddress(nil)
 								}
@@ -191,6 +226,7 @@ struct ContentView: View {
 				Picker("Tabs", selection: $selectedTab) {
 					Text("Earnings").tag(0)
 					Text("Monthly").tag(1)
+					Text("Settings").tag(2)
 				}
 				.pickerStyle(.segmented)
 			}
@@ -208,36 +244,16 @@ struct ContentView: View {
 		.tint(OceanViewApp.oceanBlue())
 	}
 
-	private func deleteAll() async {
-		for removeMe in items {
-			modelContext.delete(removeMe)
-		}
-		do {
-			try modelContext.save()
-		} catch {
-			print("Error saving context after deletes: \(error)")
-		}
-	}
-
 	private func performRefreshAction() async {
 		isRefreshing = true
 		await d.refresh()
-		await deleteAll()
-		let earnings = await d.allEarnings()
-		for one in earnings {
-			let newItem = OceanEarning(earning: one)
-			modelContext.insert(newItem)
-		}
-		do {
-			try modelContext.save()
-		} catch {
-			print("Error saving context after insert: \(error)")
-		}
+		let earnings = await d.allOceanEarnings()
+		await localStorage?.replace(earnings: earnings)
 		isRefreshing = false
 	}
 }
 
 #Preview {
-	ContentView(addressStorage: nil)
+	ContentView(addressStorage: nil, localStorage: nil, refreshStorage: nil)
 		.modelContainer(for: OceanEarning.self, inMemory: false)
 }
