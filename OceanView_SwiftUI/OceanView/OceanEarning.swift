@@ -8,12 +8,6 @@
 import Foundation
 import SwiftData
 
-extension Double {
-	func asBTC() -> String {
-		return String(format: "%0.8f", self)
-	}
-}
-
 @Model
 final class OceanEarning {
 	var blockHash: String

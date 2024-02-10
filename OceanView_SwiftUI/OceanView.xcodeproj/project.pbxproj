@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7102A6B02B781A2800B71F03 /* MonthlyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6AF2B781A2800B71F03 /* MonthlyDetailView.swift */; };
+		7102A6B22B781AD700B71F03 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B12B781AD700B71F03 /* Utilities.swift */; };
+		7102A6B42B781B2E00B71F03 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B32B781B2E00B71F03 /* Double+Formatting.swift */; };
+		7102A6B62B781B5A00B71F03 /* Int+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B52B781B5A00B71F03 /* Int+Formatting.swift */; };
 		715960D32B76FC7600DA2FC5 /* OceanViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */; };
 		715960D52B76FC7600DA2FC5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D42B76FC7600DA2FC5 /* ContentView.swift */; };
 		715960D72B76FC7600DA2FC5 /* OceanEarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D62B76FC7600DA2FC5 /* OceanEarning.swift */; };
@@ -39,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7102A6AF2B781A2800B71F03 /* MonthlyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyDetailView.swift; sourceTree = "<group>"; };
+		7102A6B12B781AD700B71F03 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		7102A6B32B781B2E00B71F03 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
+		7102A6B52B781B5A00B71F03 /* Int+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Formatting.swift"; sourceTree = "<group>"; };
 		715960CF2B76FC7600DA2FC5 /* OceanView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OceanView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanViewApp.swift; sourceTree = "<group>"; };
 		715960D42B76FC7600DA2FC5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,6 +89,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7102A6B72B781BBE00B71F03 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7102A6B12B781AD700B71F03 /* Utilities.swift */,
+				7102A6B32B781B2E00B71F03 /* Double+Formatting.swift */,
+				7102A6B52B781B5A00B71F03 /* Int+Formatting.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		715960C62B76FC7600DA2FC5 = {
 			isa = PBXGroup;
 			children = (
@@ -105,9 +123,11 @@
 			isa = PBXGroup;
 			children = (
 				715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */,
+				7102A6B72B781BBE00B71F03 /* Extensions */,
 				715960D42B76FC7600DA2FC5 /* ContentView.swift */,
 				715961082B7731BC00DA2FC5 /* AddressView.swift */,
 				715961062B77277600DA2FC5 /* EarningDetailView.swift */,
+				7102A6AF2B781A2800B71F03 /* MonthlyDetailView.swift */,
 				715960D62B76FC7600DA2FC5 /* OceanEarning.swift */,
 				715960D82B76FC7700DA2FC5 /* Assets.xcassets */,
 				715960DA2B76FC7700DA2FC5 /* Preview Content */,
@@ -279,10 +299,14 @@
 			files = (
 				715960FF2B76FE3100DA2FC5 /* Dumping.swift in Sources */,
 				715960D52B76FC7600DA2FC5 /* ContentView.swift in Sources */,
+				7102A6B62B781B5A00B71F03 /* Int+Formatting.swift in Sources */,
 				715960D72B76FC7600DA2FC5 /* OceanEarning.swift in Sources */,
+				7102A6B42B781B2E00B71F03 /* Double+Formatting.swift in Sources */,
 				715960D32B76FC7600DA2FC5 /* OceanViewApp.swift in Sources */,
 				715961072B77277600DA2FC5 /* EarningDetailView.swift in Sources */,
 				715961092B7731BC00DA2FC5 /* AddressView.swift in Sources */,
+				7102A6B22B781AD700B71F03 /* Utilities.swift in Sources */,
+				7102A6B02B781A2800B71F03 /* MonthlyDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +470,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OceanView/Preview Content\"";
-				DEVELOPMENT_TEAM = 9MTA274B2X;
+				DEVELOPMENT_TEAM = 43KN7XUNZV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -475,7 +499,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"OceanView/Preview Content\"";
-				DEVELOPMENT_TEAM = 9MTA274B2X;
+				DEVELOPMENT_TEAM = 43KN7XUNZV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

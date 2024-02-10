@@ -39,43 +39,6 @@ struct ContentView: View {
 		d = Dumping(addressStorage?.oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
 	}
 
-	static let dateFormatter: DateFormatter = {
-		let formatter = DateFormatter()
-		formatter.dateFormat = "yyyy-MM-dd"
-		formatter.timeZone = TimeZone.current
-		return formatter
-	}()
-
-	static let monthlyFormatter: DateFormatter = {
-		let formatter = DateFormatter()
-		formatter.dateFormat = "yyyy-MM"
-		formatter.timeZone = TimeZone.current
-		return formatter
-	}()
-
-	static let currencyFormatter: NumberFormatter = {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .currency
-		formatter.locale = Locale.current
-		formatter.maximumFractionDigits = 2
-		formatter.minimumFractionDigits = 2
-		return formatter
-	}()
-
-	func usdString(_ usdTotal: Double) -> String {
-		return ContentView.currencyFormatter.string(from: NSNumber(value: usdTotal)) ?? "$0.00"
-	}
-
-	func dateString(_ timestamp: Int) -> String {
-		let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-		return ContentView.dateFormatter.string(from: date)
-	}
-
-	func monthlyDateString(_ timestamp: Int) -> String {
-		let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-		return ContentView.monthlyFormatter.string(from: date)
-	}
-
 	var sortedItems: [OceanEarning] {
 		// newest to oldest
 		items.sorted { $0.timestamp > $1.timestamp }
@@ -85,7 +48,7 @@ struct ContentView: View {
 		var groups: [String: EarningsGroup] = [:]
 
 		for item in items {
-			let monthKey = monthlyDateString(item.timestamp)
+			let monthKey = item.timestamp.monthlyDateString()
 			if groups[monthKey] == nil {
 				groups[monthKey] = EarningsGroup(month: monthKey, earnings: [])
 			}
@@ -128,7 +91,7 @@ struct ContentView: View {
 								VStack(alignment: .leading) {
 									Text("\(item.btcEarned.asBTC()) BTC Earned")
 										.font(.headline)
-									Text("\(dateString(item.timestamp))")
+									Text("\(item.timestamp.dateString())")
 										.font(.subheadline)
 										.foregroundColor(.gray)
 								}
@@ -137,33 +100,35 @@ struct ContentView: View {
 					} else if selectedTab == 1 {
 						// Display monthlyItems
 						ForEach(monthlyItems, id: \.self) { monthlyItem in
-							VStack(alignment: .leading) {
-								HStack {
-									Text("\(monthlyItem.month)")
-										.font(.subheadline)
-										.bold()
-										.foregroundColor(.gray)
-									Spacer()
-									Text("\(monthlyItem.btcTotal.asBTC()) BTC Earned")
-										.font(.headline)
-								}
-								HStack {
-									VStack(alignment: .leading) {
-										Text("USD Earned")
-											.font(.footnote)
+							NavigationLink(destination: MonthlyDetailView(items: monthlyItem.earnings)) {
+								VStack(alignment: .leading) {
+									HStack {
+										Text("\(monthlyItem.month)")
+											.font(.subheadline)
+											.bold()
 											.foregroundColor(.gray)
-										Text("\(usdString(monthlyItem.usdTotal))")
-											.font(.footnote)
-											.foregroundColor(.gray)
+										Spacer()
+										Text("\(monthlyItem.btcTotal.asBTC()) BTC Earned")
+											.font(.headline)
 									}
-									Spacer()
-									VStack(alignment: .trailing) {
-										Text("BTCUSD Average")
-											.font(.footnote)
-											.foregroundColor(.gray)
-										Text("\(usdString(monthlyItem.usdAverage))")
-											.font(.footnote)
-											.foregroundColor(.gray)
+									HStack {
+										VStack(alignment: .leading) {
+											Text("USD Earned")
+												.font(.footnote)
+												.foregroundColor(.gray)
+											Text("\(monthlyItem.usdTotal.usdString())")
+												.font(.footnote)
+												.foregroundColor(.gray)
+										}
+										Spacer()
+										VStack(alignment: .trailing) {
+											Text("BTCUSD Average")
+												.font(.footnote)
+												.foregroundColor(.gray)
+											Text("\(monthlyItem.usdAverage.usdString())")
+												.font(.footnote)
+												.foregroundColor(.gray)
+										}
 									}
 								}
 							}

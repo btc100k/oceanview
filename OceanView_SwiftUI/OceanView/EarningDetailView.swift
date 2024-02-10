@@ -9,23 +9,6 @@ import SwiftUI
 
 struct EarningDetailView: View {
 	var item: OceanEarning
-	static let dateFormatter: DateFormatter = {
-		let formatter = DateFormatter()
-		formatter.dateFormat = "yyyy-MM-dd"
-		formatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
-		return formatter
-	}()
-
-	private func currencyFormattedString(from number: Double) -> String {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .currency
-		formatter.locale = Locale(identifier: "en_US")
-		formatter.maximumFractionDigits = 2
-		formatter.minimumFractionDigits = 2
-
-		return formatter.string(from: NSNumber(value: number)) ?? "$0.00"
-	}
-
 	var body: some View {
 
 		VStack(alignment: .leading, spacing: 10) {
@@ -45,7 +28,7 @@ struct EarningDetailView: View {
 			HStack {
 				Text("Date").bold()
 				Spacer()
-				Text(EarningDetailView.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(item.timestamp)))).foregroundColor(OceanViewApp.oceanBlue())
+				Text(item.timestamp.dateString()).foregroundColor(OceanViewApp.oceanBlue())
 			}
 
 			HStack {
@@ -57,7 +40,7 @@ struct EarningDetailView: View {
 			HStack {
 				Text("USD Earned").bold()
 				Spacer()
-				Text(currencyFormattedString(from: item.btcEarned * item.btcusd)).foregroundColor(OceanViewApp.oceanBlue())
+				Text((item.btcEarned * item.btcusd).usdString()).foregroundColor(OceanViewApp.oceanBlue())
 			}
 
 			Link(destination: URL(string: "https://mempool.space/block/\(item.blockHash)") ?? URL(string:"https://mempool.space/")!) {
