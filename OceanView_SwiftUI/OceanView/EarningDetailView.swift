@@ -19,7 +19,7 @@ struct EarningDetailView: View {
 	private func currencyFormattedString(from number: Double) -> String {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .currency
-		formatter.locale = Locale.current // Adjust the locale if needed
+		formatter.locale = Locale(identifier: "en_US")
 		formatter.maximumFractionDigits = 2
 		formatter.minimumFractionDigits = 2
 
