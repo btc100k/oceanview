@@ -43,19 +43,19 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 	func oceanAddress() -> String? {
 		OceanViewApp.oceanAddress()
 	}
-	
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            OceanEarning.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+	var sharedModelContainer: ModelContainer = {
+		let schema = Schema([
+			OceanEarning.self,
+		])
+		let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+		do {
+			return try ModelContainer(for: schema, configurations: [modelConfiguration])
+		} catch {
+			fatalError("Could not create ModelContainer: \(error)")
+		}
+	}()
 
 	static public func oceanBlue() -> Color {
 		Color(red: 34/255, green: 58/255, blue: 245/255)
@@ -78,15 +78,15 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 		}
 	}
 
-    var body: some Scene {
-        WindowGroup {
+	var body: some Scene {
+		WindowGroup {
 			if hasOceanAddress {
 				ContentView(addressStorage: self, localStorage: self, refreshStorage: self)
 			} else {
 				AddressView(addressStorage: self)
 			}
-        }
-        .modelContainer(sharedModelContainer)
+		}
+		.modelContainer(sharedModelContainer)
 		.onChange(of: phase) {
 			switch phase {
 			case .background: scheduleAppRefresh()
@@ -105,7 +105,7 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 				scheduleNotification()
 			}
 		}
-    }
+	}
 
 	private func cancelAppRefresh() {
 		BGTaskScheduler.shared.cancelAllTaskRequests()
@@ -171,5 +171,4 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 			}
 		}
 	}
-
 }

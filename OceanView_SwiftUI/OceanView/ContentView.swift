@@ -31,6 +31,7 @@ struct ContentView: View {
 	@State private var isRefreshing = false
 	@State private var rotationDegree: Double = 0
 	@State private var selectedTab: Int = 0
+	@State private var copyingToClipboard: Bool = false
 	let addressStorage: AddressStorage?
 	let localStorage: LocalStorage?
 	let refreshStorage: RefreshStorage?
@@ -88,11 +89,11 @@ struct ContentView: View {
 						.scaledToFit()
 						.frame(width: 50, height: 50)
 						.rotationEffect(Angle(degrees: rotationDegree))
-						 .onAppear {
-							 withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
-								 rotationDegree = 360
-							 }
-						 }
+						.onAppear {
+							withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
+								rotationDegree = 360
+							}
+						}
 					Text("Loading...")
 						.bold()
 						.foregroundColor(OceanViewApp.oceanBlue())
@@ -168,6 +169,34 @@ struct ContentView: View {
 								.foregroundColor(OceanViewApp.oceanBlue())
 
 						}
+
+						if copyingToClipboard {
+							VStack {
+								HStack {
+									Spacer()
+									Text("Copied To Clipboard")
+										.bold()
+										.foregroundColor(.gray)
+										.font(.system(size: 12))
+									Spacer()
+								}
+								Text("Thank you for your consideration")
+									.italic()
+									.font(.system(size: 10))
+									.foregroundColor(.gray)
+							}
+						} else {
+							Button(action: copyToClipboard) {
+								HStack {
+									Text("Value 4 Value")
+									Spacer()
+									Text("btc99k at strike dot me")
+										.foregroundColor(OceanViewApp.oceanBlue())
+								}
+							}
+						}
+
+
 					}
 				}
 				.navigationBarTitleDisplayMode(.inline)
@@ -231,17 +260,29 @@ struct ContentView: View {
 				.pickerStyle(.segmented)
 			}
 		}
-		detail: {
-			Text("Select an item")
-		}
-		.onAppear {
-			Task {
-				if items.isEmpty {
-					await performRefreshAction()
-				}
+	detail: {
+		Text("Select an item")
+	}
+	.onAppear {
+		Task {
+			if items.isEmpty {
+				await performRefreshAction()
 			}
 		}
-		.tint(OceanViewApp.oceanBlue())
+	}
+	.tint(OceanViewApp.oceanBlue())
+	}
+
+	func copyToClipboard() {
+		UIPasteboard.general.string = "btc99k@strike.me"
+		withAnimation {
+			copyingToClipboard = true
+		}
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+			withAnimation {
+				copyingToClipboard = false
+			}
+		}
 	}
 
 	private func performRefreshAction() async {
