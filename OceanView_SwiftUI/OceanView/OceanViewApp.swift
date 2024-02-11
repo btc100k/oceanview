@@ -15,21 +15,30 @@ protocol AddressStorage {
 	func oceanAddress() -> String?
 }
 
-protocol RefreshStorage {
+protocol SettingsStorage {
 	func saveRefreshFrequency(_ secondds: Int)
 	func refreshFrequency() -> Int
+	func saveNotificationUrgency(_ urgent: Bool)
+	func notificationUrgency() -> Bool
 }
 
 protocol LocalStorage {
 	func deleteEarnings() async
-	func replace(earnings: [OceanEarning]) async
+	func replace(earnings: [BlockEarning]) async
 }
 
 @main
-struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
-	@Environment(\.modelContext) private var modelContext
+struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 	@Environment(\.scenePhase) private var phase
-	@Query private var items: [OceanEarning]
+
+	func saveNotificationUrgency(_ urgent: Bool) {
+		UserDefaults.standard.set(urgent, forKey: "OceanNotificationUrgency")
+		UserDefaults.standard.synchronize()
+	}
+
+	func notificationUrgency() -> Bool {
+		UserDefaults.standard.bool(forKey: "OceanNotificationUrgency")
+	}
 
 	func saveRefreshFrequency(_ seconds: Int) {
 		UserDefaults.standard.set(seconds, forKey: "OceanRefreshFrequencySeconds")
@@ -51,7 +60,8 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 		let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
 		do {
-			return try ModelContainer(for: schema, configurations: [modelConfiguration])
+			let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+			return container
 		} catch {
 			fatalError("Could not create ModelContainer: \(error)")
 		}
@@ -64,7 +74,8 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 	static public func oceanAddress() -> String? {
 		UserDefaults.standard.string(forKey: "OceanAddress")
 	}
-	@State public var hasOceanAddress = OceanViewApp.oceanAddress() != nil
+
+	@State private var hasOceanAddress = OceanViewApp.oceanAddress() != nil
 
 	public func saveOceanAddress(_ addr: String?) {
 		if let address = addr {
@@ -81,7 +92,8 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 	var body: some Scene {
 		WindowGroup {
 			if hasOceanAddress {
-				ContentView(addressStorage: self, localStorage: self, refreshStorage: self)
+				ContentView(addressStorage: self, localStorage: self, settingsStorage: self)
+
 			} else {
 				AddressView(addressStorage: self)
 			}
@@ -90,29 +102,34 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 		.onChange(of: phase) {
 			switch phase {
 			case .background: scheduleAppRefresh()
-			case .active: cancelAppRefresh()
+			case .active: cancelBackgroundWork()
 			default: break
 			}
 		}
 		.backgroundTask(.appRefresh("refresh-earnings")) {
-			let countBefore = items.count
-			let d = Dumping(oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
-			await d.refresh()
-			let allEarnings = await d.allOceanEarnings()
-			if allEarnings.count > countBefore {
-				// the # has changed
-				await replace(earnings: allEarnings)
-				scheduleNotification()
+			if hasOceanAddress {
+				let context = ModelContext(sharedModelContainer)
+				let countBefore = (try? context.fetchCount(FetchDescriptor<OceanEarning>())) ?? 0
+				let d = Dumping(oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
+				await d.refresh()
+				let allEarnings = await d.allEarnings()
+				if allEarnings.count > countBefore {
+					// the # has changed
+					await replace(earnings: allEarnings)
+					scheduleNotification()
+				}
 			}
 		}
 	}
 
-	private func cancelAppRefresh() {
+	private func cancelBackgroundWork() {
 		BGTaskScheduler.shared.cancelAllTaskRequests()
+		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+		UNUserNotificationCenter.current().setBadgeCount(0)
 	}
 
 	private func scheduleAppRefresh() {
-		cancelAppRefresh()
+		cancelBackgroundWork()
 		let frequency = refreshFrequency()
 		// no way to set a refresh < 5 minutes.
 		if frequency >= 60 {
@@ -123,26 +140,24 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 	}
 
 	func deleteEarnings() async {
-		for removeMe in items {
-			modelContext.delete(removeMe)
-		}
-		do {
-			try modelContext.save()
-		} catch {
-			print("Error saving context after deletes: \(error)")
+		let context = ModelContext(sharedModelContainer)
+		if let items = try? context.fetch(FetchDescriptor<OceanEarning>()) {
+			for one in items {
+				context.delete(one)
+			}
+			try? context.save()
 		}
 	}
 
-	func replace(earnings: [OceanEarning]) async {
+	func replace(earnings: [BlockEarning]) async {
 		await deleteEarnings()
+		print("earnings count: \(earnings.count)")
+		let context = ModelContext(sharedModelContainer)
 		for one in earnings {
-			modelContext.insert(one)
+			let oneOcean = OceanEarning(earning: one)
+			context.insert(oneOcean)
 		}
-		do {
-			try modelContext.save()
-		} catch {
-			print("Error saving context after insert: \(error)")
-		}
+		try? context.save()
 	}
 
 	func scheduleNotification() {
@@ -150,17 +165,19 @@ struct OceanViewApp: App, AddressStorage, RefreshStorage, LocalStorage {
 			if granted && error == nil {
 				// Create content
 				let content = UNMutableNotificationContent()
-				let addr = oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
-				let body = "A new BTC reward has been earned by \(addr)."
 				content.title = "BTC Earned"
-				content.body = body
+				content.body = "A new BTC reward has been earned"
+				content.subtitle = oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
 				content.sound = UNNotificationSound.default
+				content.badge = 1
+				content.interruptionLevel = notificationUrgency() ? .active : .passive
+				content.threadIdentifier = "new-block"
 
-				// Trigger
 				let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // 5 seconds from now
-
-				// Create the request
 				let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+				// get rid of any pending notifications since we're adding a new one right now
+				UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
 				// Schedule the notification
 				UNUserNotificationCenter.current().add(request) { error in

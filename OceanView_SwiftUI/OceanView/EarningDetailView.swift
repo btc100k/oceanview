@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EarningDetailView: View {
+	@State var rotationDegree: Double = 0
 	var item: OceanEarning
 	var body: some View {
 
@@ -16,6 +17,12 @@ struct EarningDetailView: View {
 				Image("blue_ocean_logo")
 					.scaledToFit()
 					.frame(width: 50, height: 50)
+					.rotationEffect(Angle(degrees: rotationDegree))
+					.onAppear {
+						withAnimation(Animation.linear(duration: 60).repeatForever(autoreverses: false)) {
+							rotationDegree = 360
+						}
+					}
 				Text("Ocean.xyz").bold().foregroundColor(OceanViewApp.oceanBlue())
 			}
 

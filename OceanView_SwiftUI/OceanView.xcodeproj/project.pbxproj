@@ -11,6 +11,11 @@
 		7102A6B22B781AD700B71F03 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B12B781AD700B71F03 /* Utilities.swift */; };
 		7102A6B42B781B2E00B71F03 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B32B781B2E00B71F03 /* Double+Formatting.swift */; };
 		7102A6B62B781B5A00B71F03 /* Int+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B52B781B5A00B71F03 /* Int+Formatting.swift */; };
+		7102A6BA2B78853B00B71F03 /* ContentRefreshingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6B92B78853B00B71F03 /* ContentRefreshingView.swift */; };
+		7102A6BC2B78A4B900B71F03 /* ContentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6BB2B78A4B900B71F03 /* ContentSettingsView.swift */; };
+		7102A6BE2B78ABE000B71F03 /* ContentMonthlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6BD2B78ABE000B71F03 /* ContentMonthlyView.swift */; };
+		7102A6C02B78AD0900B71F03 /* ContentEarningsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6BF2B78AD0900B71F03 /* ContentEarningsView.swift */; };
+		7102A6C22B78ADB500B71F03 /* EarningsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6C12B78ADB500B71F03 /* EarningsGroup.swift */; };
 		715960D32B76FC7600DA2FC5 /* OceanViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */; };
 		715960D52B76FC7600DA2FC5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D42B76FC7600DA2FC5 /* ContentView.swift */; };
 		715960D72B76FC7600DA2FC5 /* OceanEarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D62B76FC7600DA2FC5 /* OceanEarning.swift */; };
@@ -48,6 +53,11 @@
 		7102A6B32B781B2E00B71F03 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		7102A6B52B781B5A00B71F03 /* Int+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Formatting.swift"; sourceTree = "<group>"; };
 		7102A6B82B782F3000B71F03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7102A6B92B78853B00B71F03 /* ContentRefreshingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRefreshingView.swift; sourceTree = "<group>"; };
+		7102A6BB2B78A4B900B71F03 /* ContentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSettingsView.swift; sourceTree = "<group>"; };
+		7102A6BD2B78ABE000B71F03 /* ContentMonthlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMonthlyView.swift; sourceTree = "<group>"; };
+		7102A6BF2B78AD0900B71F03 /* ContentEarningsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentEarningsView.swift; sourceTree = "<group>"; };
+		7102A6C12B78ADB500B71F03 /* EarningsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningsGroup.swift; sourceTree = "<group>"; };
 		715960CF2B76FC7600DA2FC5 /* OceanView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OceanView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanViewApp.swift; sourceTree = "<group>"; };
 		715960D42B76FC7600DA2FC5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -127,8 +137,13 @@
 				715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */,
 				7102A6B72B781BBE00B71F03 /* Extensions */,
 				715960D42B76FC7600DA2FC5 /* ContentView.swift */,
+				7102A6BF2B78AD0900B71F03 /* ContentEarningsView.swift */,
+				7102A6BD2B78ABE000B71F03 /* ContentMonthlyView.swift */,
+				7102A6B92B78853B00B71F03 /* ContentRefreshingView.swift */,
+				7102A6BB2B78A4B900B71F03 /* ContentSettingsView.swift */,
 				715961082B7731BC00DA2FC5 /* AddressView.swift */,
 				715961062B77277600DA2FC5 /* EarningDetailView.swift */,
+				7102A6C12B78ADB500B71F03 /* EarningsGroup.swift */,
 				7102A6AF2B781A2800B71F03 /* MonthlyDetailView.swift */,
 				715960D62B76FC7600DA2FC5 /* OceanEarning.swift */,
 				715960D82B76FC7700DA2FC5 /* Assets.xcassets */,
@@ -300,7 +315,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				715960FF2B76FE3100DA2FC5 /* Dumping.swift in Sources */,
+				7102A6BA2B78853B00B71F03 /* ContentRefreshingView.swift in Sources */,
 				715960D52B76FC7600DA2FC5 /* ContentView.swift in Sources */,
+				7102A6C22B78ADB500B71F03 /* EarningsGroup.swift in Sources */,
+				7102A6BE2B78ABE000B71F03 /* ContentMonthlyView.swift in Sources */,
 				7102A6B62B781B5A00B71F03 /* Int+Formatting.swift in Sources */,
 				715960D72B76FC7600DA2FC5 /* OceanEarning.swift in Sources */,
 				7102A6B42B781B2E00B71F03 /* Double+Formatting.swift in Sources */,
@@ -308,7 +326,9 @@
 				715961072B77277600DA2FC5 /* EarningDetailView.swift in Sources */,
 				715961092B7731BC00DA2FC5 /* AddressView.swift in Sources */,
 				7102A6B22B781AD700B71F03 /* Utilities.swift in Sources */,
+				7102A6C02B78AD0900B71F03 /* ContentEarningsView.swift in Sources */,
 				7102A6B02B781A2800B71F03 /* MonthlyDetailView.swift in Sources */,
+				7102A6BC2B78A4B900B71F03 /* ContentSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
