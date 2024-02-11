@@ -60,9 +60,9 @@ struct ContentView: View {
 
 					ToolbarItem(placement: .principal) {
 						Text(addressStorage?.oceanAddress() ?? "")
-							.font(.system(size: 13)) // Smaller font size
+							.font(.system(size: 13))
 							.lineLimit(1)
-							.truncationMode(.middle) // Truncate in the middle
+							.truncationMode(.middle)
 							.foregroundColor(OceanViewApp.oceanBlue())
 					}
 

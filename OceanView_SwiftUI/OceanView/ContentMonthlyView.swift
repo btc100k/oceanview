@@ -32,7 +32,6 @@ struct ContentMonthlyView: View {
 		return Array(groups.values).sorted { $0.month > $1.month }
 	}
 	var body: some View {
-		// Display monthlyItems
 		ForEach(monthlyItems, id: \.self) { monthlyItem in
 			NavigationLink(destination: MonthlyDetailView(items: monthlyItem.earnings)) {
 				VStack(alignment: .leading) {

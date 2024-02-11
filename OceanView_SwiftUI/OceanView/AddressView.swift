@@ -32,7 +32,7 @@ struct AddressView: View {
 					}
 				}
 				.foregroundColor(Color(red: 34/255, green: 58/255, blue: 245/255))
-				.padding() // Add padding around the button
+				.padding()
 			}
 		}
 	}

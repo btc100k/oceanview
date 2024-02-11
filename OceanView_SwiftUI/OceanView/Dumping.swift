@@ -178,7 +178,7 @@ class Dumping {
 		let date = Date(timeIntervalSince1970: TimeInterval(blockEarning.timestamp))
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "yyyy-MM-dd"
-		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
+		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
 		let yyyymmdd_str = dateFormatter.string(from: date)
 
 		let url = URL(string: "https://api.coinbase.com/v2/prices/BTC-USD/spot?date=\(yyyymmdd_str)")!

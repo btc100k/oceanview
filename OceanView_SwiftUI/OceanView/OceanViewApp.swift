@@ -156,13 +156,12 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 				content.interruptionLevel = notificationUrgency() ? .active : .passive
 				content.threadIdentifier = "new-block"
 
-				let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false) // 5 seconds from now
+				let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
 				let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
 				// get rid of any pending notifications since we're adding a new one right now
 				UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
-				// Schedule the notification
 				UNUserNotificationCenter.current().add(request) { error in
 					if let error = error {
 						print("Error scheduling notification: \(error)")
