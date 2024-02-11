@@ -23,6 +23,15 @@ struct BlockEarning: Decodable {
 		btcEarned = earned
 		btcFee = fee
 	}
+
+	init(hash: String, earned: Double, fee: Double, ht: Int, ts: Int, usd: Double) {
+		blockHash = hash
+		btcEarned = earned
+		btcFee = fee
+		height = ht
+		timestamp = ts
+		btcusd = usd
+	}
 }
 
 actor AddressEarnings {

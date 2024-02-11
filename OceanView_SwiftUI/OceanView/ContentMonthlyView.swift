@@ -72,4 +72,5 @@ struct ContentMonthlyView: View {
 
 #Preview {
 	ContentMonthlyView()
+		.modelContainer(for: OceanEarning.self, inMemory: false)
 }

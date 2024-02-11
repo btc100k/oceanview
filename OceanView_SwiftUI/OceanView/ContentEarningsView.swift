@@ -34,4 +34,5 @@ struct ContentEarningsView: View {
 
 #Preview {
 	ContentEarningsView()
+		.modelContainer(for: OceanEarning.self, inMemory: false)
 }

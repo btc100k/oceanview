@@ -52,5 +52,17 @@ struct MonthlyDetailView: View {
 }
 
 #Preview {
-	MonthlyDetailView(items: [OceanEarning(earning: BlockEarning(hash: "000000000000000000009ef7ac2c30976bc7e05c2cdab10e5a5de7efd96492a7", earned: 0.01, fee: 0.00))])
+	MonthlyDetailView(items: [OceanEarning(earning: BlockEarning(hash: "000000000000000000021e98215d3064e83061e88a3d78f9dc2088364cab4984"
+																 , earned: 0.01
+																 , fee: 0.00
+																 , ht: 829933
+																 , ts: 1707673321
+																 , usd: 48321.70)),
+							  OceanEarning(earning: BlockEarning(hash: "00000000000000000001400a421f4fae3a8fb9bc73dfc9fa80dba6ec2035e25c"
+																 , earned: 0.0125
+																 , fee: 0.00
+																 , ht: 829513
+																 , ts: 1707366805
+																 , usd: 44335.00))
+							 ])
 }

@@ -62,5 +62,10 @@ struct EarningDetailView: View {
 	}}
 
 #Preview {
-	EarningDetailView(item: OceanEarning(earning: BlockEarning(hash: "000000000000000000009ef7ac2c30976bc7e05c2cdab10e5a5de7efd96492a7", earned: 0.01, fee: 0.00)))
+	EarningDetailView(item: OceanEarning(earning: BlockEarning(hash: "000000000000000000021e98215d3064e83061e88a3d78f9dc2088364cab4984"
+															   , earned: 0.01
+															   , fee: 0.00
+															   , ht: 829933
+															   , ts: 1707673321
+															   , usd: 48321.70)))
 }
