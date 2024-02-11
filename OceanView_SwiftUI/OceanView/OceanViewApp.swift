@@ -10,23 +10,6 @@ import SwiftUI
 import SwiftData
 import UserNotifications
 
-protocol AddressStorage {
-	func saveOceanAddress(_ addr: String?)
-	func oceanAddress() -> String?
-}
-
-protocol SettingsStorage {
-	func saveRefreshFrequency(_ secondds: Int)
-	func refreshFrequency() -> Int
-	func saveNotificationUrgency(_ urgent: Bool)
-	func notificationUrgency() -> Bool
-}
-
-protocol LocalStorage {
-	func deleteEarnings() async
-	func replace(earnings: [BlockEarning]) async
-}
-
 @main
 struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 	@Environment(\.scenePhase) private var phase
