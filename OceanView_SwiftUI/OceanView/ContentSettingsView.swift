@@ -13,7 +13,6 @@ struct ContentSettingsView: View {
 	@State private var copyingToClipboard: Bool = false
 	let settingsStorage: SettingsStorage?
 	let refreshIntervals = [("Manual Only", 0),
-							("1 minute (Don't do this)", 60),
 							("5 minutes", 300),
 							("15 minutes", 900),
 							("1 hour", 3600),
@@ -41,6 +40,9 @@ struct ContentSettingsView: View {
 					}
 					.pickerStyle(MenuPickerStyle())
 					.onChange(of: selectedRefreshInterval) {
+						if Int(selectedRefreshInterval) > 0 {
+							requestNotificationPermissions()
+						}
 						settingsStorage?.saveRefreshFrequency(Int(selectedRefreshInterval))
 					}
 				}
@@ -139,6 +141,16 @@ struct ContentSettingsView: View {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
 			withAnimation {
 				copyingToClipboard = false
+			}
+		}
+	}
+
+	private func requestNotificationPermissions() {
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+			if granted {
+				NSLog("Permission Granted")
+			} else {
+				NSLog("Permission Denied")
 			}
 		}
 	}

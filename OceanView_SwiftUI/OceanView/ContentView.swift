@@ -118,12 +118,14 @@ struct ContentView: View {
 	}
 
 	private func performRefreshAction() async {
+		let taskIdentifier = await UIApplication.shared.beginBackgroundTask();
 		isRefreshing = true
 		let d = Dumping(addressStorage?.oceanAddress() ?? "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
 		await d.refresh()
 		let earnings = await d.allEarnings()
 		await localStorage?.replace(earnings: earnings)
 		isRefreshing = false
+		await UIApplication.shared.endBackgroundTask(taskIdentifier)
 	}
 }
 

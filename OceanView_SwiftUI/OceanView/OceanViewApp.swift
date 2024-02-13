@@ -115,10 +115,15 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 		cancelBackgroundWork()
 		let frequency = refreshFrequency()
 		// no way to set a refresh < 5 minutes.
-		if frequency >= 60 {
+		if frequency >= (5*60) {
 			let request = BGAppRefreshTaskRequest(identifier: "refresh-earnings")
 			request.earliestBeginDate = .now.addingTimeInterval(TimeInterval(frequency))
-			try? BGTaskScheduler.shared.submit(request)
+
+			do {
+				try BGTaskScheduler.shared.submit(request)
+			} catch {
+				NSLog("Failed Requested BGAppRefresh: \(error)");
+			}
 		}
 	}
 
@@ -134,7 +139,6 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 
 	func replace(earnings: [BlockEarning]) async {
 		await deleteEarnings()
-		print("earnings count: \(earnings.count)")
 		let context = ModelContext(sharedModelContainer)
 		for one in earnings {
 			let oneOcean = OceanEarning(earning: one)
