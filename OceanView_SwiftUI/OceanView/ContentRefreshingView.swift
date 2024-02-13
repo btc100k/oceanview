@@ -12,6 +12,7 @@ struct ContentRefreshingView: View {
     var body: some View {
 		HStack {
 			Image("blue_ocean_logo")
+				.resizable()
 				.scaledToFit()
 				.frame(width: 50, height: 50)
 				.rotationEffect(Angle(degrees: rotationDegree))

@@ -15,6 +15,7 @@ struct EarningDetailView: View {
 		VStack(alignment: .leading, spacing: 10) {
 			HStack {
 				Image("blue_ocean_logo")
+					.resizable()
 					.scaledToFit()
 					.frame(width: 50, height: 50)
 					.rotationEffect(Angle(degrees: rotationDegree))
@@ -23,7 +24,7 @@ struct EarningDetailView: View {
 							rotationDegree = 360
 						}
 					}
-				Text("Ocean.xyz").bold().foregroundColor(OceanViewApp.oceanBlue())
+				Text("Ocean Pool").bold().foregroundColor(OceanViewApp.oceanBlue())
 			}
 
 			HStack {

@@ -16,13 +16,14 @@ struct AddressView: View {
 			VStack {
 				HStack {
 					Image("blue_ocean_logo")
+						.resizable()
 						.scaledToFit()
 						.frame(width: 50, height: 50)
-					Text("Ocean.xyz").bold().foregroundColor(OceanViewApp.oceanBlue())
+					Text("Ocean Pool").bold().foregroundColor(OceanViewApp.oceanBlue())
 					Spacer()
 				}.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
 
-				TextField("Enter Ocean.xyz Address", text: $btcAddress)
+				TextField("Enter BTC Address", text: $btcAddress)
 					.textFieldStyle(RoundedBorderTextFieldStyle())
 					.padding()
 
