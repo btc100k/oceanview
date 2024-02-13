@@ -84,7 +84,7 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 		.modelContainer(sharedModelContainer)
 		.onChange(of: phase) {
 			switch phase {
-			case .background: scheduleAppRefresh()
+			case .background: scheduleAppRefresh(cancel: true)
 			case .active: cancelBackgroundWork()
 			default: break
 			}
@@ -101,6 +101,8 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 					await replace(earnings: allEarnings)
 					scheduleNotification()
 				}
+				// no that we have processed this app-refresh, let us schedule the next one.
+				scheduleAppRefresh(cancel: false)
 			}
 		}
 	}
@@ -111,8 +113,10 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 		UNUserNotificationCenter.current().setBadgeCount(0)
 	}
 
-	private func scheduleAppRefresh() {
-		cancelBackgroundWork()
+	private func scheduleAppRefresh(cancel: Bool) {
+		if cancel {
+			cancelBackgroundWork()
+		}
 		let frequency = refreshFrequency()
 		// no way to set a refresh < 5 minutes.
 		if frequency >= (5*60) {
