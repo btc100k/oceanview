@@ -13,6 +13,7 @@ import UserNotifications
 @main
 struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 	@Environment(\.scenePhase) private var phase
+	@Environment(\.colorScheme) var colorScheme
 
 	func saveNotificationUrgency(_ urgent: Bool) {
 		UserDefaults.standard.set(urgent, forKey: "OceanNotificationUrgency")
@@ -50,8 +51,10 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 		}
 	}()
 
-	static public func oceanBlue() -> Color {
-		Color(red: 34/255, green: 58/255, blue: 245/255)
+
+	static public func oceanBlue(for colorScheme: ColorScheme) -> Color {
+		return colorScheme == .dark ? .white : Color(red: 34/255, green: 58/255, blue: 245/255)
+
 	}
 
 	static public func oceanAddress() -> String? {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddressView: View {
 	@State private var btcAddress = OceanViewApp.oceanAddress() ?? ""
+	@Environment(\.colorScheme) var colorScheme
 	var addressStorage: AddressStorage?
 
 	var body: some View {
@@ -19,7 +20,7 @@ struct AddressView: View {
 						.resizable()
 						.scaledToFit()
 						.frame(width: 50, height: 50)
-					Text("Ocean Pool").bold().foregroundColor(OceanViewApp.oceanBlue())
+					Text("Ocean Pool").bold().foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 					Spacer()
 				}.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
 
@@ -32,7 +33,7 @@ struct AddressView: View {
 						storage.saveOceanAddress(btcAddress)
 					}
 				}
-				.foregroundColor(Color(red: 34/255, green: 58/255, blue: 245/255))
+				.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 				.padding()
 			}
 		}

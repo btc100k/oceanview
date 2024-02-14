@@ -11,6 +11,8 @@ struct ContentSettingsView: View {
 	@State private var selectedRefreshInterval = 0
 	@State private var notificationUrgency = 0
 	@State private var copyingToClipboard: Bool = false
+	@Environment(\.colorScheme) var colorScheme
+
 	let settingsStorage: SettingsStorage?
 	let refreshIntervals = [("Manual Only", 0),
 							("5 minutes", 300),
@@ -49,7 +51,7 @@ struct ContentSettingsView: View {
 				Text("This uses network & battery, so make sure you know what you're doing if you set this more frequent than 1 hour.")
 					.italic()
 					.font(.system(size: 11))
-					.foregroundColor(OceanViewApp.oceanBlue())
+					.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 
 			}
 			.padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
@@ -74,13 +76,13 @@ struct ContentSettingsView: View {
 						Text("Plays a sound with the notiification")
 							.italic()
 							.font(.system(size: 11))
-							.foregroundColor(OceanViewApp.oceanBlue())
+							.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 							.lineLimit(1)
 					} else {
 						Text("Silently adds a badge")
 							.italic()
 							.font(.system(size: 11))
-							.foregroundColor(OceanViewApp.oceanBlue())
+							.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 							.lineLimit(1)
 					}
 					Spacer()
@@ -114,7 +116,7 @@ struct ContentSettingsView: View {
 							Text("Value 4 Value")
 							Spacer()
 							Text("btc99k at strike dot me")
-								.foregroundColor(OceanViewApp.oceanBlue())
+								.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 						}
 					}
 				}

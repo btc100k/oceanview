@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentRefreshingView: View {
 	@State private var rotationDegree: Double = 0
+	@Environment(\.colorScheme) var colorScheme
+
     var body: some View {
 		HStack {
 			Image("blue_ocean_logo")
@@ -23,7 +25,7 @@ struct ContentRefreshingView: View {
 				}
 			Text("Loading...")
 				.bold()
-				.foregroundColor(OceanViewApp.oceanBlue())
+				.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 
 		}
     }

@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
 	@Environment(\.modelContext) private var modelContext
 	@Environment(\.openURL) var openURL
+	@Environment(\.colorScheme) var colorScheme
 	@Query private var items: [OceanEarning]
 	@State private var isRefreshing = false
 	@State private var selectedTab: Int = 0
@@ -54,7 +55,7 @@ struct ContentView: View {
 								.font(.system(size: 13))
 								.lineLimit(1)
 								.truncationMode(.middle)
-								.foregroundColor(OceanViewApp.oceanBlue())
+								.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 						}
 					}
 
@@ -63,7 +64,7 @@ struct ContentView: View {
 							.font(.system(size: 13))
 							.lineLimit(1)
 							.truncationMode(.middle)
-							.foregroundColor(OceanViewApp.oceanBlue())
+							.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 					}
 
 					ToolbarItem(placement: .navigationBarLeading) {
@@ -79,7 +80,7 @@ struct ContentView: View {
 						}) {
 							Label("Logout", systemImage: "power")
 						}
-						.foregroundColor(OceanViewApp.oceanBlue())
+						.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 					}
 					ToolbarItem(placement: .navigationBarTrailing) {
 						if isRefreshing {
@@ -92,7 +93,7 @@ struct ContentView: View {
 							}) {
 								Label("Refresh", systemImage: "arrow.clockwise")
 							}
-							.foregroundColor(OceanViewApp.oceanBlue())
+							.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 						}
 					}
 				}
@@ -114,7 +115,7 @@ struct ContentView: View {
 			}
 		}
 	}
-	.tint(OceanViewApp.oceanBlue())
+	.tint(OceanViewApp.oceanBlue(for: colorScheme))
 	}
 
 	private func performRefreshAction() async {

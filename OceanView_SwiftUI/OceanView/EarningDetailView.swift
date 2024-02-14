@@ -9,6 +9,8 @@ import SwiftUI
 
 struct EarningDetailView: View {
 	@State var rotationDegree: Double = 0
+	@Environment(\.colorScheme) var colorScheme
+
 	var item: OceanEarning
 	var body: some View {
 
@@ -24,37 +26,37 @@ struct EarningDetailView: View {
 							rotationDegree = 360
 						}
 					}
-				Text("Ocean Pool").bold().foregroundColor(OceanViewApp.oceanBlue())
+				Text("Ocean Pool").bold().foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 			}
 
 			HStack {
 				Text("Block Height").bold()
 				Spacer()
-				Text("\(item.height)").foregroundColor(OceanViewApp.oceanBlue())
+				Text("\(item.height)").foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 			}
 
 			HStack {
 				Text("Date").bold()
 				Spacer()
-				Text(item.timestamp.dateString()).foregroundColor(OceanViewApp.oceanBlue())
+				Text(item.timestamp.dateString()).foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 			}
 
 			HStack {
 				Text("BTC Earned").bold()
 				Spacer()
-				Text(item.btcEarned.asBTC()).foregroundColor(OceanViewApp.oceanBlue())
+				Text(item.btcEarned.asBTC()).foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 			}
 
 			HStack {
 				Text("USD Earned").bold()
 				Spacer()
-				Text((item.btcEarned * item.btcusd).usdString()).foregroundColor(OceanViewApp.oceanBlue())
+				Text((item.btcEarned * item.btcusd).usdString()).foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 			}
 
 			Link(destination: URL(string: "https://mempool.space/block/\(item.blockHash)") ?? URL(string:"https://mempool.space/")!) {
 				HStack {
 					Spacer()
-					Text("See in mempool.space").bold().foregroundColor(OceanViewApp.oceanBlue())
+					Text("See in mempool.space").bold().foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
 					Spacer()
 				}
 			}
