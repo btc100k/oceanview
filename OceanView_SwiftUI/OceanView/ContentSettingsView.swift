@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentSettingsView: View {
 	@State private var selectedRefreshInterval = 0
 	@State private var notificationUrgency = 0
-	@State private var copyingToClipboard: Bool = false
+	@State private var showingDisclaimer = false
 	@Environment(\.colorScheme) var colorScheme
 
 	let settingsStorage: SettingsStorage?
@@ -90,41 +90,8 @@ struct ContentSettingsView: View {
 
 			}
 			.padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
-
-			Divider()
-
-
-			VStack() {
-				if copyingToClipboard {
-					VStack {
-						HStack {
-							Spacer()
-							Text("Copied To Clipboard")
-								.bold()
-								.foregroundColor(.gray)
-								.font(.system(size: 12))
-							Spacer()
-						}
-						Text("Thank you for your consideration")
-							.italic()
-							.font(.system(size: 10))
-							.foregroundColor(.gray)
-					}
-				} else {
-					Button(action: copyToClipboard) {
-						HStack {
-							Text("Value 4 Value")
-							Spacer()
-							Text("btc99k at strike dot me")
-								.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
-						}
-					}
-				}
-			}
-			.padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
-			.frame(height: 35)
-
 		}
+
 		.onAppear {
 			selectedRefreshInterval = settingsStorage?.refreshFrequency() ?? 0
 			if settingsStorage?.notificationUrgency() ?? false {
@@ -133,17 +100,19 @@ struct ContentSettingsView: View {
 				notificationUrgency = 0
 			}
 		}
-	}
 
-	private func copyToClipboard() {
-		UIPasteboard.general.string = "btc99k@strike.me"
-		withAnimation {
-			copyingToClipboard = true
-		}
-		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-			withAnimation {
-				copyingToClipboard = false
+		.toolbar {
+			// Position the toolbar at the bottom
+			ToolbarItemGroup(placement: .bottomBar) {
+				Button("Disclaimer") {
+					// Show the disclaimer sheet when the button is tapped
+					showingDisclaimer = true
+				}
 			}
+		}
+
+		.sheet(isPresented: $showingDisclaimer) {
+			DisclaimerView(showingDisclaimer: $showingDisclaimer)
 		}
 	}
 

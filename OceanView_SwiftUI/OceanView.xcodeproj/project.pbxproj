@@ -19,6 +19,7 @@
 		7102A6C52B793C6A00B71F03 /* AddressStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6C42B793C6A00B71F03 /* AddressStorage.swift */; };
 		7102A6C72B793C8700B71F03 /* SettingsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6C62B793C8700B71F03 /* SettingsStorage.swift */; };
 		7102A6C92B793CA100B71F03 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102A6C82B793CA100B71F03 /* LocalStorage.swift */; };
+		713006542B803F3400074531 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713006532B803F3400074531 /* DisclaimerView.swift */; };
 		715960D32B76FC7600DA2FC5 /* OceanViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */; };
 		715960D52B76FC7600DA2FC5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D42B76FC7600DA2FC5 /* ContentView.swift */; };
 		715960D72B76FC7600DA2FC5 /* OceanEarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715960D62B76FC7600DA2FC5 /* OceanEarning.swift */; };
@@ -65,6 +66,7 @@
 		7102A6C62B793C8700B71F03 /* SettingsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStorage.swift; sourceTree = "<group>"; };
 		7102A6C82B793CA100B71F03 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		713006522B7AE63C00074531 /* OceanView.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OceanView.entitlements; sourceTree = "<group>"; };
+		713006532B803F3400074531 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		715960CF2B76FC7600DA2FC5 /* OceanView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OceanView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		715960D22B76FC7600DA2FC5 /* OceanViewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OceanViewApp.swift; sourceTree = "<group>"; };
 		715960D42B76FC7600DA2FC5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				7102A6BD2B78ABE000B71F03 /* ContentMonthlyView.swift */,
 				7102A6B92B78853B00B71F03 /* ContentRefreshingView.swift */,
 				7102A6BB2B78A4B900B71F03 /* ContentSettingsView.swift */,
+				713006532B803F3400074531 /* DisclaimerView.swift */,
 				715961082B7731BC00DA2FC5 /* AddressView.swift */,
 				715961062B77277600DA2FC5 /* EarningDetailView.swift */,
 				7102A6C12B78ADB500B71F03 /* EarningsGroup.swift */,
@@ -335,6 +338,7 @@
 			files = (
 				715960FF2B76FE3100DA2FC5 /* Dumping.swift in Sources */,
 				7102A6BA2B78853B00B71F03 /* ContentRefreshingView.swift in Sources */,
+				713006542B803F3400074531 /* DisclaimerView.swift in Sources */,
 				715960D52B76FC7600DA2FC5 /* ContentView.swift in Sources */,
 				7102A6C22B78ADB500B71F03 /* EarningsGroup.swift in Sources */,
 				7102A6BE2B78ABE000B71F03 /* ContentMonthlyView.swift in Sources */,
