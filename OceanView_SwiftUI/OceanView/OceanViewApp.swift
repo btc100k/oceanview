@@ -14,6 +14,7 @@ import UserNotifications
 struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 	@Environment(\.scenePhase) private var phase
 	@Environment(\.colorScheme) var colorScheme
+	@State private var isRefreshing = false
 
 	func saveNotificationUrgency(_ urgent: Bool) {
 		UserDefaults.standard.set(urgent, forKey: "OceanNotificationUrgency")
@@ -41,7 +42,7 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 		let schema = Schema([
 			OceanEarning.self,
 		])
-		let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+		let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, groupContainer: .identifier("group.oceanpool"))
 
 		do {
 			let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
@@ -77,11 +78,12 @@ struct OceanViewApp: App, AddressStorage, SettingsStorage, LocalStorage {
 
 	var body: some Scene {
 		WindowGroup {
-			if hasOceanAddress {
-				ContentView(addressStorage: self, localStorage: self, settingsStorage: self)
-
+			if isRefreshing {
+				ContentRefreshingView()
+			} else if hasOceanAddress {
+				ContentView(isRefreshing: $isRefreshing, addressStorage: self, localStorage: self, settingsStorage: self)
 			} else {
-				AddressView(addressStorage: self)
+				AddressView(isRefreshing: $isRefreshing, addressStorage: self, localStorage: self)
 			}
 		}
 		.modelContainer(sharedModelContainer)

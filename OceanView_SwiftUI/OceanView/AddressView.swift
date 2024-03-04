@@ -9,8 +9,10 @@ import SwiftUI
 
 struct AddressView: View {
 	@State private var btcAddress = OceanViewApp.oceanAddress() ?? ""
+	@Binding var isRefreshing: Bool
 	@Environment(\.colorScheme) var colorScheme
 	var addressStorage: AddressStorage?
+	var localStorage: LocalStorage?
 
 	var body: some View {
 		NavigationView {
@@ -29,8 +31,18 @@ struct AddressView: View {
 					.padding()
 
 				Button("My Stats") {
-					if let storage = addressStorage {
-						storage.saveOceanAddress(btcAddress)
+					Task {
+						isRefreshing = true
+						if let storage = addressStorage {
+							if let lstorage = localStorage {
+								let d = Dumping(btcAddress)
+								await d.refresh()
+								let earnings = await d.allEarnings()
+								await lstorage.replace(earnings: earnings)
+							}
+							storage.saveOceanAddress(btcAddress)
+						}
+						isRefreshing = false
 					}
 				}
 				.foregroundColor(OceanViewApp.oceanBlue(for: colorScheme))
@@ -40,6 +52,10 @@ struct AddressView: View {
 	}
 }
 
-#Preview {
-	AddressView(addressStorage: nil)
+struct AddressView_Previews: PreviewProvider {
+	@State static var isRefreshing = true
+	
+	static var previews: some View {
+		AddressView(isRefreshing: $isRefreshing, addressStorage: nil, localStorage: nil)
+	}
 }

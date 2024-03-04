@@ -89,7 +89,6 @@ struct DisclaimerView: View {
 			Spacer()
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.background(.gray)
 	}
 
 	private func strikeToClipboard() {

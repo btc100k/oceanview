@@ -11,6 +11,7 @@ import SwiftData
 struct ContentMonthlyView: View {
 	@Environment(\.modelContext) private var modelContext
 	@Query private var items: [OceanEarning]
+	let delegate: SettingsDelegate?
 
 	var monthlyItems: [EarningsGroup] {
 		var groups: [String: EarningsGroup] = [:]
@@ -33,7 +34,7 @@ struct ContentMonthlyView: View {
 	}
 	var body: some View {
 		ForEach(monthlyItems, id: \.self) { monthlyItem in
-			NavigationLink(destination: MonthlyDetailView(items: monthlyItem.earnings)) {
+			NavigationLink(destination: MonthlyDetailView(items: monthlyItem.earnings, delegate: delegate)) {
 				VStack(alignment: .leading) {
 					HStack {
 						Text("\(monthlyItem.month)")
@@ -67,9 +68,10 @@ struct ContentMonthlyView: View {
 			}
 		}
 	}
+
 }
 
 #Preview {
-	ContentMonthlyView()
+	ContentMonthlyView(delegate: nil)
 		.modelContainer(for: OceanEarning.self, inMemory: false)
 }

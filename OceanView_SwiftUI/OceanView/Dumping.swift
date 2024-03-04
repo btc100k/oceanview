@@ -8,31 +8,6 @@
 import SwiftSoup
 import Foundation
 
-struct BlockEarning: Decodable {
-	var blockHash: String
-	var btcEarned: Double
-	var btcFee: Double
-
-	// secondary information, retrieved by networking
-	var height: Int = 0
-	var timestamp: Int = 0
-	var btcusd: Double = 0
-
-	init(hash: String, earned: Double, fee: Double) {
-		blockHash = hash
-		btcEarned = earned
-		btcFee = fee
-	}
-
-	init(hash: String, earned: Double, fee: Double, ht: Int, ts: Int, usd: Double) {
-		blockHash = hash
-		btcEarned = earned
-		btcFee = fee
-		height = ht
-		timestamp = ts
-		btcusd = usd
-	}
-}
 
 actor AddressEarnings {
 	private var results: [String:BlockEarning] = [:]
@@ -188,7 +163,6 @@ class Dumping {
 			throw URLError(.badServerResponse)
 		}
 		do {
-			//{"data":{"amount":"42126.55","base":"BTC","currency":"USD"}}
 			guard let jsonObject = try JSONSerialization.jsonObject(with: rawData, options: []) as? [String: Any] else {
 				print("JSON decode failure \(url)")
 				return

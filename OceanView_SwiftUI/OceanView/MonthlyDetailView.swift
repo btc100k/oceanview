@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MonthlyDetailView: View {
 	var items: [OceanEarning]
+	let delegate: SettingsDelegate?
+	
 	var sortedItems: [OceanEarning] {
 		// newest to oldest
 		items.sorted { $0.timestamp > $1.timestamp }
@@ -48,6 +50,17 @@ struct MonthlyDetailView: View {
 				}
 			}
 		}
+		.toolbar {
+			ToolbarItem(placement: .navigationBarTrailing) {
+				Button(action: {
+					Task {
+						await delegate?.copy(items:sortedItems)
+					}
+				}) {
+					Label("Copy", systemImage: "square.on.square")
+				}
+			}
+		}
 	}
 }
 
@@ -64,5 +77,5 @@ struct MonthlyDetailView: View {
 																 , ht: 829513
 																 , ts: 1707366805
 																 , usd: 44335.00))
-							 ])
+							 ], delegate: nil)
 }
