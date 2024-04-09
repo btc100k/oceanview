@@ -5,7 +5,6 @@
 //  Created by Raymond on 2/9/24.
 //
 
-import SwiftSoup
 import Foundation
 
 
@@ -70,42 +69,38 @@ class Dumping {
 		}
 	}
 
-	func populate(oceanAddress addr: AddressEarnings, page num: Int = 0) async throws {
+	//https://api.ocean.xyz/v1/earnpay/bc1q6w0n6mjcq56t45fk7slveqw0n0ss7flsfj5uh8
+	func populate(oceanAddress addr: AddressEarnings) async throws {
 		let address = await addr.address()
-		let url = URL(string: "https://ocean.xyz/stats/\(address)?epage=\(num)")!
+		let url = URL(string: "https://api.ocean.xyz/v1/earnpay/\(address)/1701388800/99999999999")!
 		let (data, response) = try await URLSession.shared.data(from: url)
 		guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
 			throw URLError(.badServerResponse)
 		}
 		do {
-			let html = String(data: data, encoding: .utf8)!
-			let doc: Document = try SwiftSoup.parse(html)
-			guard let earningsTable = try doc.select("#earnings-fulltable table").first() else {
-				// at this point we are complete
-				return
-			}
-
-			let rows = try earningsTable.select("tr")
-			let rowArray = rows.array()
+			let decoder = JSONDecoder()
+			let response = try decoder.decode(EarnPayRoot.self, from: data)
+			
+			let rowArray = response.result.earnings
 			for row in rowArray {
-				let cells = try row.select("td").array().map { try $0.text() }
-
-				if !cells.isEmpty {
-					let blockHash = cells[0]
-					let btcEarned = Double(cells[2].split(separator: " ")[0]) ?? 0.0
-					let btcFee = Double(cells[3].split(separator: " ")[0]) ?? 0.0
-
-					let earnings = BlockEarning(hash: blockHash, earned: btcEarned, fee: btcFee)
-					await addr.add(earning: earnings)
-
-					try await updateBlockHeight(oceanAddress: addr, blockHash: blockHash)
-					try await updatePrice(oceanAddress: addr, blockHash: blockHash)
-				}
+				/*
+				 let blockHash: String
+				 let ts: String
+				 let sharesInWindow: Int
+				 let feesCollectedSatoshis: Int
+				 let satoshisNetEarned: Int
+				 
+				 */
+				let blockHash = row.blockHash
+				let btcEarned = Double(row.satoshisNetEarned) / 100_000_000.0
+				let btcFee = Double(row.feesCollectedSatoshis) / 100_000_000.0
+				
+				let earnings = BlockEarning(hash: blockHash, earned: btcEarned, fee: btcFee)
+				await addr.add(earning: earnings)
+				
+				try await updateBlockHeight(oceanAddress: addr, blockHash: blockHash)
+				try await updatePrice(oceanAddress: addr, blockHash: blockHash)
 			}
-			// move on to the next page
-			try await populate(oceanAddress: addr, page: num + 1)
-		} catch Exception.Error(let type, let message) {
-			print("Error of type \(type) with message: \(message)")
 		} catch {
 			print("error")
 		}
